@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trimurti Publicity & Marketing Pvt. Ltd.</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f0f4f8 0%, #e1e9f0 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .card-container {
+            perspective: 1000px;
+        }
+        .location-card {
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+            background: white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .location-card:hover {
+            transform: rotateY(10deg) scale(1.03);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        .card-header {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        .action-button {
+            flex-grow: 1;
+            margin: 0 5px;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .map-button {
+            background-color: #10b981;
+            color: white;
+        }
+        .photo-button {
+            background-color: #6366f1;
+            color: white;
+        }
+        .map-button:hover {
+            background-color: #059669;
+        }
+        .photo-button:hover {
+            background-color: #4f46e5;
+        }
+        .search-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .search-input {
+            border: none;
+            background: transparent;
+        }
+        .search-input:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="container mx-auto">
+        <h1 class="text-4xl font-bold text-center mb-8 text-blue-700 tracking-wide">
+            Hoarding Locations Directory Jamshedpur
+        </h1>
+        
+        <!-- Improved Search Container -->
+        <div class="mb-8 flex justify-center">
+            <div class="search-container flex items-center w-full max-w-md px-4 py-2 space-x-3">
+                <i class="fas fa-search text-gray-400"></i>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Search locations..." 
+                    class="search-input w-full text-gray-700"
+                >
+            </div>
+        </div>
+
+        <!-- Location Cards Container -->
+        <div id="locationsContainer" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Cards will be dynamically inserted here -->
+        </div>
+
+        <!-- Summary -->
+        <div class="mt-8 text-center bg-blue-100 p-4 rounded-lg shadow-md">
+            <p class="text-gray-700 font-semibold">
+                Total Locations: 18 | Total Unipole: 26 | Total Hoarding: 29
+            </p>
+        </div>
+    </div>
+
+    <script>
+        setInterval(() => {
+            if (window.outerHeight - window.innerHeight > 100 || window.outerWidth - window.innerWidth > 100) {
+                window.location.reload();
+        }
+        }, 1000);
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "F12" || 
+                (event.ctrlKey && event.shiftKey && (event.key === "I" || event.key === "J")) ||
+                (event.ctrlKey && event.key === "U")) {
+                event.preventDefault();
+            }
+        });
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        // Location data (same as previous example)
+        const locations = [
+        {
+                name: "Mango Bus Stand Roundabout",
+                location: "Mango",
+                category: "Mango",
+                unipole: 2,
+                hoarding: 2,
+                googleMapsLink: "https://drive.google.com/file/d/19MJsYVmoXkKDPeIEoTP20R3PKInXXYz7/view?usp=sharing",
+                photosLink: "https://drive.google.com/drive/folders/1rAub1ucBc5ec2Hk9E9D1_UAwJJ1Z_BQD?usp=sharing"
+            },
+            {
+                name: "Marindrive Entry Roundabout",
+                location: "Marindrive",
+                category: "Marindrive",
+                unipole: 2,
+                hoarding: 2,
+                googleMapsLink: "https://drive.google.com/file/d/19MJsYVmoXkKDPeIEoTP20R3PKInXXYz7/view?usp=sharing",
+                photosLink: "https://drive.google.com/drive/folders/1yOwCPti63qjUjnyrhgWUGr1zexOp_gE8?usp=sharing"
+            },
+            {
+                name: "Old Court Roundabout",
+                location: "Sakchi",
+                category: "Sakchi",
+                unipole: 0,
+                hoarding: 2,
+                googleMapsLink: "https://drive.google.com/file/d/19MJsYVmoXkKDPeIEoTP20R3PKInXXYz7/view?usp=sharing",
+                photosLink: "https://drive.google.com/drive/folders/1qxET9-EqiaiokYrpcjK9AFGYvTmvQuLt?usp=sharing"
+            },
+            {
+                name: "Sakchi Roundabout",
+                location: "Sakchi",
+                category: "Sakchi",
+                unipole: 1,
+                hoarding: 2,
+                googleMapsLink: "https://drive.google.com/file/d/19MJsYVmoXkKDPeIEoTP20R3PKInXXYz7/view?usp=sharing",
+                photosLink: "https://drive.google.com/drive/folders/1XmDxrzMnpsRKpX2s__d6Gv1qApw_Jws9?usp=sharing"
+            },
+            {
+                name: "Sakchi Carparking",
+                location: "Sakchi",
+                category: "Sakchi",
+                unipole: 1,
+                hoarding: 2,
+                googleMapsLink: "https://drive.google.com/file/d/19MJsYVmoXkKDPeIEoTP20R3PKInXXYz7/view?usp=sharing",
+                photosLink: "https://drive.google.com/drive/folders/1tnSQ38mUNiKFumtcmrA9gN15LthDA-YT?usp=sharing"
+            },
+            {
+                name: "Sakchi Dhatkidih Roundabout",
+                location: "Sakchi",
+                category: "Sakchi",
+                unipole: 4,
+                hoarding: 2,
+                googleMapsLink: "https://drive.google.com/file/d/19MJsYVmoXkKDPeIEoTP20R3PKInXXYz7/view?usp=sharing",
+                photosLink: "https://drive.google.com/drive/folders/1L8DRAUjAb6E4IQoXlSaSVYgzlfw3IHRc?usp=sharing"
+            },
+            {
+                name: "(Sakchi) Tisco Gate Roundabout",
+                location: "Sakchi",
+                category: "Sakchi",
+                unipole: 1,
+                hoarding: 2,
+                googleMapsLink: "https://drive.google.com/file/d/19MJsYVmoXkKDPeIEoTP20R3PKInXXYz7/view?usp=sharing",
+                photosLink: "https://drive.google.com/drive/folders/1XfDUSIwBgKZ0pWaBmXWBVrg5yW821hTY?usp=sharing"
+            },
+            {
+                name: "Sakchi Police Hospital",
+                location: "Sakchi",
+                category: "Sakchi",
+                unipole: 0,
+                hoarding: 1,
+                googleMapsLink: "https://drive.google.com/file/d/19MJsYVmoXkKDPeIEoTP20R3PKInXXYz7/view?usp=sharing",
+                photosLink: "https://drive.google.com/drive/folders/1lisxSJ-BFf_6yjMH6rlpXI9dg2Iahg4V?usp=sharing"
+            },
+            {
+                name: "Aam Bagan Gate(Bengal Club Side)",
+                location: "Sakchi",
+                category: "Sakchi",
+                unipole: 0,
+                hoarding: 2,
+                googleMapsLink: "https://drive.google.com/file/d/19MJsYVmoXkKDPeIEoTP20R3PKInXXYz7/view?usp=sharing",
+                photosLink: "https://drive.google.com/drive/folders/1HLomOWfX6iqZHBz6WdIdJID-3x9NaP5G?usp=sharing"
+            },               
+            {
+                name: "Sakchi to Bistupur Link Road",
+                location: "Sakchi",
+                category: "Link",
+                unipole: 4,
+                hoarding: 2,
+                googleMapsLink: "https://drive.google.com/file/d/19MJsYVmoXkKDPeIEoTP20R3PKInXXYz7/view?usp=sharing",
+                photosLink: "https://drive.google.com/drive/folders/1paBfiQxDGu5TGgARmuzdVRB5z5xo4-U6?usp=sharing"
+            },
+            {
+                name: "Bistupur Main Road",
+                location: "Bistupur",
+                category: "Bistupur",
+                unipole: 2,
+                hoarding: 0,
+                googleMapsLink: "https://drive.google.com/file/d/19MJsYVmoXkKDPeIEoTP20R3PKInXXYz7/view?usp=sharing",
+                photosLink: "https://drive.google.com/drive/folders/1fONyKCwv_ApgjG_OjJjk_eaK7Dkogw4G?usp=sharing"
+            },
+            {
+                name: "Bistupur Voltas Building Roundabout",
+                location: "Bistupur",
+                category: "Bistupur",
+                unipole: 2,
+                hoarding: 2,
+                googleMapsLink: "https://drive.google.com/file/d/19MJsYVmoXkKDPeIEoTP20R3PKInXXYz7/view?usp=sharing",
+                photosLink: "https://drive.google.com/drive/folders/1ddO6RUtoPmWggKpZJ5ai4oFQ9CsUfCRQ?usp=sharing"
+            },
+            {
+                name: "Kadma (KF1 Flats Society)",
+                location: "Kadma",
+                category: "Kadma",
+                unipole: 0,
+                hoarding: 1,
+                googleMapsLink: "https://drive.google.com/file/d/19MJsYVmoXkKDPeIEoTP20R3PKInXXYz7/view?usp=sharing",
+                photosLink: "https://drive.google.com/drive/folders/1LRLCI4wmcFepBNA-rWDDNbpneQXujC2A?usp=sharing"
+            },
+            {
+                name: "Bistupur Adityapur Roundabout",
+                location: "Bistupur",
+                category: "Other",
+                unipole: 2,
+                hoarding: 3,
+                googleMapsLink: "https://drive.google.com/file/d/19MJsYVmoXkKDPeIEoTP20R3PKInXXYz7/view?usp=sharing",
+                photosLink: "https://drive.google.com/drive/folders/1WncUMeZm5y8jqXk_0i-RoU3lrWNCxFte?usp=sharing"
+            },
+            {
+                name: "Near Evening Club",
+                location: "Golmuri",
+                category: "Golmuri",
+                unipole: 2,
+                hoarding: 1,
+                googleMapsLink: "https://drive.google.com/file/d/19MJsYVmoXkKDPeIEoTP20R3PKInXXYz7/view?usp=sharing",
+                photosLink: "https://drive.google.com/drive/folders/1UrMlRDRIlhL1ucFduv8cYAzr7cRBR19F?usp=sharing"
+            },
+            {
+                name: "R.D Tata Roundabout",
+                location: "Golmuri",
+                category: "Golmuri",
+                unipole: 0,
+                hoarding: 2,
+                googleMapsLink: "https://drive.google.com/file/d/19MJsYVmoXkKDPeIEoTP20R3PKInXXYz7/view?usp=sharing",
+                photosLink: "https://drive.google.com/drive/folders/1jz0VysA1iOsvllPqpoEvaqu2-SiRLNo9?usp=sharing"
+            },
+            {
+                name: "Garabasa Station Road",
+                location: "Jugsalai",
+                category: "Jugsalai",
+                unipole: 3,
+                hoarding: 1,
+                googleMapsLink: "https://drive.google.com/file/d/19MJsYVmoXkKDPeIEoTP20R3PKInXXYz7/view?usp=sharing",
+                photosLink: "https://drive.google.com/drive/folders/118LHq450aF8fgoQWU5TI_3qNBOP5aA2k?usp=sharing"
+            },
+            
+            {
+                name: "Sonari Roundabout",
+                location: "Sonari",
+                category: "Sonari",
+                unipole: 2,
+                hoarding: 2,
+                googleMapsLink: "https://drive.google.com/file/d/19MJsYVmoXkKDPeIEoTP20R3PKInXXYz7/view?usp=sharing",
+                photosLink: "https://drive.google.com/drive/folders/1YuGj9HosDZf0VTCzQkEepZBIU_Vz5apM?usp=sharing"
+            },
+            
+        ];
+        
+
+        // Render locations with enhanced card design
+        function renderLocations(filteredLocations = locations) {
+            const container = document.getElementById('locationsContainer');
+            container.innerHTML = '';
+
+            filteredLocations.forEach(location => {
+                const card = document.createElement('div');
+                card.className = 'card-container';
+                card.innerHTML = `
+                    <div class="location-card">
+                        <div class="card-header">
+                            <h2 class="text-xl font-bold">${location.name}</h2>
+                        </div>
+                        <div class="p-4">
+                            <div class="space-y-2 text-gray-700 mb-4">
+                                <p><strong>Location:</strong> ${location.location}</p>
+                                <p><strong>Category:</strong> ${location.category}</p>
+                                <p><strong>Unipole:</strong> ${location.unipole}</p>
+                                <p><strong>Hoarding:</strong> ${location.hoarding}</p>
+                            </div>
+                            <div class="action-buttons">
+                                <a href="${location.googleMapsLink}" target="_blank" 
+                                   class="action-button map-button">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>View Map
+                                </a>
+                                <a href="${location.photosLink}" target="_blank" 
+                                   class="action-button photo-button">
+                                    <i class="fas fa-images mr-2"></i>View Photos
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const filteredLocations = locations.filter(location => 
+                location.name.toLowerCase().includes(searchTerm) ||
+                location.location.toLowerCase().includes(searchTerm) ||
+                location.category.toLowerCase().includes(searchTerm)
+            );
+            renderLocations(filteredLocations);
+        });
+
+        // Initial render
+        renderLocations();
+    </script>
+</body>
+</html>
